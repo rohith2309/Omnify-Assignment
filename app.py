@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta,UTC
 from extensions import db
 from models import FitnessClass, Booking
 from pytz import timezone, utc
@@ -95,7 +95,8 @@ def get_classes():
 
 @app.route('/api/book', methods=['POST','GET'])
 def book_class():
-    
+    tz= request.args.get('tz', 'Asia/Kolkata')  # Default to Asia/Kolkata
+    local_tz = timezone(tz)  # to handle timezone conversion
     if request.method=='POST':
         data = request.get_json()
         class_id = data.get('class_id')
@@ -126,13 +127,20 @@ def book_class():
             
             client_name=client_name,
             client_email=client_email,
-            booking_time=datetime.utcnow(),
+            booking_time=datetime.now(UTC),
             fitness_class_id=fitness_class.id
             )
         db.session.add(new_booking)
         db.session.commit()
 
-        return jsonify({'message': 'Booking successful', 'class': new_booking}), 200
+        return jsonify({'message': 'Booking successful', 'class': {
+            'id': fitness_class.id,
+            'name': fitness_class.name,
+            'instructor': fitness_class.instructor,
+            'available_slots': fitness_class.available_slots,
+            'max_slots': fitness_class.max_slots,
+            'date': fitness_class.date.astimezone(local_tz).strftime('%Y-%m-%d %H:%M:%S %Z')
+        }}), 200
                 
 
         
@@ -145,7 +153,7 @@ def book_class():
             'available_slots': fitness_class.available_slots,
             'max_slots': fitness_class.max_slots,
             'instructor': fitness_class.instructor,
-            'date': fitness_class.date.strftime('%d-%m-%Y %H:%M')
+            'date':fitness_class.date.astimezone(local_tz).strftime('%Y-%m-%d %H:%M:%S %Z')
         }
     }), 200
 
