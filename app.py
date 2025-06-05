@@ -64,9 +64,11 @@ def apis():
         'message': 'Welcome to the API',
         'endpoints': {
             '/': 'Home endpoint',
-            '/api/classes': 'List all upcoming classes (GET)',
-            '/api/book': 'Book a class (POST) required fields[class_id,client_name,client_email]',
-            '/api/bookings/<client_email>': 'Get bookings for a client (GET)',
+            '/api/classes?tz=TimeZone': 'List all upcoming classes (GET)',
+            '/api/book?tz=TimeZone': 'Book a class (POST) required fields[class_id,client_name,client_email]',
+            '/api/bookings/<client_email>?tz=TimeZone': 'Get bookings for a client (GET)',
+            '/api/create_class': 'Create a new fitness class (POST) required fields[name,instructor,date,available_slots,max_slots]'
+            
         }
     })
 
