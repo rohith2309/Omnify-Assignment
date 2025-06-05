@@ -3,8 +3,9 @@ Steps to be followed in order to run this app.
 1. create a virtual python env
 2. pip install the modules that are mentioned in requirements.txt
 3. activate the virtual env
-4. run the seeding.py (to populate the db with sample data)
-5. run testsql.py to see the table data
+4. delete the instance folder (to create a new DB)
+5. run the seeding.py (to populate the db with sample data)
+6. run testsql.py to see the table data
 
 ENDPOINTS (POSTMAN): examples
 
@@ -138,3 +139,4 @@ ENDPOINTS (POSTMAN): examples
 
 
 
+=================================Thank you==============================================
